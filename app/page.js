@@ -240,7 +240,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#0b0b0d] text-gray-200 flex flex-col items-center p-10 gap-10">
+    <div className="min-h-screen w-full bg-[#0b0b0d] text-gray-200 flex flex-col items-center px-10 py-5 gap-10">
       <h1 className="text-4xl font-bold tracking-tight">QR Code Generator</h1>
 
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -470,17 +470,22 @@ export default function Home() {
           </button>
           <div className="flex flex-col gap-2">
             {/* Color Section */}
-            <h2 className="text-xl font-semibold tracking-wide text-gray-300">
-              Customization{" "}
-              <button
-                onClick={() => setToggleCustomization(!toggleCustomization)}
-                className={`${
-                  toggleCustomization ? "rotate-90" : ""
-                } transition-all duration-300`}
-              >
-                »
-              </button>
-            </h2>
+            <button
+              onClick={() => setToggleCustomization(!toggleCustomization)}
+            >
+              <div className="flex items-center gap-2">
+                <div className="text-xl font-semibold tracking-wide text-gray-300">
+                  Customization{" "}
+                </div>
+                <span
+                  className={`${
+                    toggleCustomization ? "rotate-90" : ""
+                  } transition-all duration-300`}
+                >
+                  »
+                </span>
+              </div>
+            </button>
             {toggleCustomization && (
               <div className="flex flex-col gap-4">
                 <div className="space-y-3">
