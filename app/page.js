@@ -140,10 +140,9 @@ export default function Home() {
   ]);
 
   useEffect(() => {
-    // Initialize QR code with default data
     const qrCode = new QRCodeStyling({
-      width: size,
-      height: size,
+      width: 300,
+      height: 300,
       data: "https://example.com",
     });
 
@@ -195,15 +194,14 @@ export default function Home() {
         dotsOptions: {
           color,
           type: dotStyle,
-          // Ensure dots and corners have different styles
           colorType: { single: true, color: color },
         },
         cornersSquareOptions: {
           type: cornerStyle,
-          color: color, // You can make this a different color if desired
+          color: color,
         },
         cornersDotOptions: {
-          type: cornerStyle === "dot" ? "dot" : "square", // Special handling for dot corners
+          type: cornerStyle === "dot" ? "dot" : "square",
           color: color,
         },
         backgroundOptions: {
@@ -214,7 +212,7 @@ export default function Home() {
           crossOrigin: "anonymous",
           margin: 5,
           hideBackgroundDots: true,
-          imageSize: 0.3, // Logo size (30% of QR code size)
+          imageSize: 0.3,
         },
       });
     }
@@ -223,21 +221,22 @@ export default function Home() {
   function download() {
     if (!qr) return;
 
-    // Temporarily resize to slider value for download
-    // const downloadSize = size || 200;
-
-    // qr.update({
-    //   width: downloadSize,
-    //   height: downloadSize,
-    // });
+    const originalSize = 300;
+    qr.update({
+      width: size,
+      height: size,
+    });
 
     qr.download({ extension: fileType });
 
-    // Restore preview size to 200px
-    // qr.update({
-    //   width: 200,
-    //   height: 200,
-    // });
+    setTimeout(() => {
+      if (qr) {
+        qr.update({
+          width: originalSize,
+          height: originalSize,
+        });
+      }
+    }, 1);
   }
 
   return (
@@ -483,7 +482,7 @@ export default function Home() {
               </button>
             </h2>
             {toggleCustomization && (
-              <div>
+              <div className="flex flex-col gap-4">
                 <div className="space-y-3">
                   <h3 className="font-semibold text-gray-300">Colors</h3>
                   <div className="flex gap-4">
@@ -566,6 +565,24 @@ export default function Home() {
                       }
                     }}
                     className="block w-full text-gray-400 bg-[#1a1a1d] border border-[#2d2d30] rounded-lg p-2 text-sm file:bg-[#232326] file:text-gray-300 file:border-none file:p-3 file:py-1 file:rounded-md hover:file:bg-[#2c2c31]"
+                  />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-300">Size</h3>
+                  <div className="w-full flex justify-between">
+                    <label>Min: 200</label>
+                    <label>
+                      {size}px x {size}px
+                    </label>
+                    <label>Max: 1000</label>
+                  </div>
+                  <input
+                    value={size}
+                    onChange={(e) => setSize(e.target.value)}
+                    className="w-full"
+                    min={200}
+                    max={1000}
+                    type="range"
                   />
                 </div>
               </div>
