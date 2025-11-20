@@ -8,8 +8,6 @@ export default function Home() {
   const ref = useRef(null);
   const [qr, setQr] = useState(null);
 
-  //[color, bgColor, dotStyle, cornerStyle, image, isGenerated]);
-
   const [color, setColor] = useState("#000000");
   const [bgColor, setBgColor] = useState("#ffffff");
   const [dotStyle, setDotStyle] = useState("rounded");
@@ -140,6 +138,11 @@ export default function Home() {
   ]);
 
   useEffect(() => {
+    // Clear any existing QR code first
+    if (ref.current) {
+      ref.current.innerHTML = "";
+    }
+
     const qrCode = new QRCodeStyling({
       width: 300,
       height: 300,
@@ -148,6 +151,13 @@ export default function Home() {
 
     setQr(qrCode);
     qrCode.append(ref.current);
+
+    // Cleanup function to clear the QR code when component unmounts
+    return () => {
+      if (ref.current) {
+        ref.current.innerHTML = "";
+      }
+    };
   }, []);
 
   // Update QR code when data or styles change (preview fixed at 200px)
@@ -241,7 +251,15 @@ export default function Home() {
 
   return (
     <div className="min-h-screen w-full bg-[#0b0b0d] text-gray-200 flex flex-col items-center px-10 py-5 gap-10">
-      <h1 className="text-4xl font-bold tracking-tight">QR Code Generator</h1>
+      <div className="flex gap-10 justify-center items-center">
+        <h1 className="text-4xl font-bold tracking-tight">Generate QR</h1>
+        <Link
+          href="/qrdecode"
+          className="text-grey-100 hover:text-blue-300 text-2xl mb-2 inline-block"
+        >
+          Decode QR
+        </Link>
+      </div>
 
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* LEFT PANEL */}
